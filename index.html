@@ -1,0 +1,376 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.site{font-family:var(--font-sans);background:var(--color-background-tertiary);min-height:600px;border-radius:var(--border-radius-lg);overflow:hidden;border:0.5px solid var(--color-border-tertiary)}
+.topbar{background:#6B0F1A;padding:0 16px;display:flex;align-items:center;justify-content:space-between;height:52px}
+.topbar-title{color:#fff;font-size:15px;font-weight:500;letter-spacing:0.01em}
+.topbar-sub{color:#f0b8be;font-size:11px}
+.nav{background:#4a0a12;display:flex;gap:2px;padding:0 10px;overflow-x:auto}
+.nav-btn{padding:10px 14px;font-size:12px;font-weight:500;color:#f5cdd1;background:none;border:none;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:color 0.15s}
+.nav-btn:hover{color:#f5cdd1}
+.nav-btn.active{color:#f5cdd1;border-bottom-color:#F0C040}
+.page{display:none;padding:16px}
+.page.active{display:block}
+.home-banner{background:#6B0F1A;border-radius:var(--border-radius-lg);padding:24px 20px;margin-bottom:16px;text-align:center}
+.home-banner h1{color:#fff;font-size:20px;font-weight:500;margin-bottom:4px}
+.home-banner p{color:#f0b8be;font-size:13px;line-height:1.6}
+.home-banner .kiriwina{color:#F0C040;font-size:16px;font-weight:500;margin-bottom:8px}
+.quick-search{display:flex;gap:8px;margin-top:16px}
+.quick-search input{flex:1;padding:10px 12px;border-radius:var(--border-radius-md);border:0.5px solid #8a2030;background:#3d0810;color:#fff;font-size:13px;outline:none}
+.quick-search input::placeholder{color:#b07080}
+.quick-search input:focus{border-color:#F0C040}
+.qs-btn{padding:10px 16px;background:#F0C040;color:#4a0a12;border:none;border-radius:var(--border-radius-md);font-size:13px;font-weight:500;cursor:pointer}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.stat{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:12px;text-align:center}
+.stat-num{font-size:22px;font-weight:500;color:#6B0F1A}
+.stat-lbl{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
+.menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.menu-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px;cursor:pointer;transition:border-color 0.15s}
+.menu-card:hover{border-color:#6B0F1A}
+.menu-card .icon{width:32px;height:32px;border-radius:8px;background:#f9e8ea;display:flex;align-items:center;justify-content:center;margin-bottom:8px;font-size:16px}
+.menu-card h3{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:3px}
+.menu-card p{font-size:11px;color:var(--color-text-secondary);line-height:1.5}
+.search-tabs{display:flex;gap:6px;margin-bottom:14px}
+.stab{padding:7px 14px;border-radius:20px;font-size:12px;font-weight:500;border:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary);color:var(--color-text-secondary);cursor:pointer}
+.stab.active{background:#6B0F1A;color:#f5cdd1;border-color:#6B0F1A}
+.search-box{display:flex;gap:8px;margin-bottom:16px}
+.search-box input{flex:1;padding:10px 12px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary);color:var(--color-text-primary);font-size:13px;outline:none}
+.search-box input:focus{border-color:#6B0F1A}
+.search-box button{padding:10px 16px;background:#6B0F1A;color:#f5cdd1;border:none;border-radius:var(--border-radius-md);font-size:13px;cursor:pointer}
+.song-result{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:12px 14px;margin-bottom:8px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:border-color 0.15s}
+.song-result:hover{border-color:#6B0F1A}
+.song-num-badge{width:36px;height:36px;border-radius:8px;background:#f9e8ea;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;color:#6B0F1A;flex-shrink:0}
+.song-result-info h4{font-size:13px;font-weight:500;color:var(--color-text-primary)}
+.song-result-info p{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
+.cat-badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:10px;background:#f9e8ea;color:#6B0F1A;font-weight:500;margin-left:6px}
+.song-detail{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden}
+.song-detail-header{background:#6B0F1A;padding:16px 18px}
+.song-detail-header .num{color:#F0C040;font-size:12px;font-weight:500;margin-bottom:4px}
+.song-detail-header h2{color:#fff;font-size:18px;font-weight:500}
+.song-detail-header .meta{color:#f5cdd1;font-size:12px;margin-top:4px}
+.verse-block{padding:14px 18px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.verse-block:last-child{border-bottom:none}
+.verse-label{font-size:11px;font-weight:500;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px}
+.verse-text{font-size:14px;color:var(--color-text-primary);line-height:2}
+.chorus-block{padding:14px 18px;background:#fdf3f4;border-bottom:0.5px solid var(--color-border-tertiary)}
+.chorus-block .verse-label{color:#6B0F1A}
+.chorus-block .verse-text{font-weight:500;color:#3d0810}
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--color-text-secondary);background:none;border:none;cursor:pointer;margin-bottom:12px;padding:0}
+.back-btn:hover{color:var(--color-text-primary)}
+.present-btn{width:100%;padding:12px;background:#6B0F1A;color:#f5cdd1;border:none;border-radius:var(--border-radius-md);font-size:13px;font-weight:500;cursor:pointer;margin-top:12px}
+.present-btn:hover{background:#4a0a12}
+.author-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px;margin-bottom:10px}
+.author-card:hover{border-color:#6B0F1A}
+.author-top{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.author-avatar{width:44px;height:44px;border-radius:50%;background:#6B0F1A;color:#F0C040;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:500;flex-shrink:0}
+.author-card h3{font-size:14px;font-weight:500;color:var(--color-text-primary)}
+.author-card .role{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
+.author-card .years{font-size:11px;color:#6B0F1A;font-weight:500}
+.author-card p{font-size:12px;color:var(--color-text-secondary);line-height:1.6}
+.author-songs{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.author-song-pill{font-size:11px;padding:3px 8px;border-radius:10px;background:#f9e8ea;color:#6B0F1A}
+.cat-row{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:12px 14px;margin-bottom:8px;cursor:pointer;display:flex;align-items:center;justify-content:space-between}
+.cat-row:hover{border-color:#6B0F1A}
+.cat-row-left h4{font-size:13px;font-weight:500;color:var(--color-text-primary)}
+.cat-row-left p{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
+.cat-count{font-size:13px;font-weight:500;color:#6B0F1A;background:#f9e8ea;padding:4px 10px;border-radius:20px}
+.tool-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:10px}
+.tool-card-header{background:#6B0F1A;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.tool-card-header h3{color:#f5cdd1;font-size:13px;font-weight:500}
+.tool-card-body{padding:14px}
+.step{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start}
+.step-num{width:22px;height:22px;border-radius:50%;background:#6B0F1A;color:#F0C040;font-size:11px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.step p{font-size:13px;color:var(--color-text-secondary);line-height:1.6}
+.proj-screen{background:#1a0305;border-radius:var(--border-radius-lg);padding:32px 28px;margin-top:12px}
+.proj-snum{font-size:11px;font-weight:500;color:#8a3040;letter-spacing:0.1em;margin-bottom:4px}
+.proj-title{font-size:17px;font-weight:500;color:#f5cdd1;margin-bottom:20px}
+.proj-vlabel{font-size:10px;color:#6a2030;letter-spacing:0.08em;margin-bottom:8px}
+.proj-lyrics{font-size:20px;color:#f9eded;line-height:1.8}
+.proj-controls{display:flex;align-items:center;justify-content:space-between;margin-top:20px;padding-top:14px;border-top:0.5px solid #2d0810}
+.proj-dots{display:flex;gap:6px}
+.proj-dot{width:7px;height:7px;border-radius:50%;background:#2d0810}
+.proj-dot.on{background:#d06070}
+.proj-nav{display:flex;gap:8px}
+.proj-nav button{padding:7px 16px;border-radius:7px;font-size:12px;font-weight:500;cursor:pointer;border:0.5px solid #3d1020;background:#250810;color:#f5cdd1}
+.proj-nav button.pr{background:#6B0F1A;color:#f5cdd1;border-color:#8a1525}
+.proj-nav button:hover{background:#350c15}
+.proj-nav button.pr:hover{background:#4a0a12}
+.section-title{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:10px}
+.result-count{font-size:12px;color:var(--color-text-secondary);margin-bottom:10px}
+</style>
+
+<div class="site">
+  <div class="topbar">
+    <div>
+      <div class="topbar-title">Kiriwina Buki Wosi</div>
+      <div class="topbar-sub">Kiriwina Hymn Book</div>
+    </div>
+    <div style="width:32px;height:32px;border-radius:50%;background:#F0C040;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;color:#4a0a12">KBW</div>
+  </div>
+
+  <div class="nav">
+    <button class="nav-btn active" onclick="showPage('home',this)">Home</button>
+    <button class="nav-btn" onclick="showPage('search',this)">Search Songs</button>
+    <button class="nav-btn" onclick="showPage('authors',this)">Authors</button>
+    <button class="nav-btn" onclick="showPage('categories',this)">Categories</button>
+    <button class="nav-btn" onclick="showPage('tools',this)">Church Tools</button>
+  </div>
+
+  <div id="home" class="page active">
+    <div class="home-banner">
+      <div class="kiriwina">Tuma! Kiriwina Buki Wosi</div>
+      <h1>Welcome to our Hymn Book</h1>
+      <p>Search, read and sing the hymns of the Kiriwina church community.<br>All songs are in Kiriwina language.</p>
+      <div class="quick-search">
+        <input type="text" id="hs-input" placeholder="Search by song number, lyrics, or author..." onkeydown="if(event.key==='Enter')homeSearch()">
+        <button class="qs-btn" onclick="homeSearch()">Search</button>
+      </div>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><div class="stat-num">120</div><div class="stat-lbl">Total songs</div></div>
+      <div class="stat"><div class="stat-num">18</div><div class="stat-lbl">Authors</div></div>
+      <div class="stat"><div class="stat-num">10</div><div class="stat-lbl">Categories</div></div>
+    </div>
+    <div class="section-title">Browse the website</div>
+    <div class="menu-grid">
+      <div class="menu-card" onclick="showPage('search',document.querySelectorAll('.nav-btn')[1])">
+        <div class="icon" style="font-size:16px">🔍</div>
+        <h3>Search songs</h3><p>Find by number, lyric line, or author name</p>
+      </div>
+      <div class="menu-card" onclick="showPage('authors',document.querySelectorAll('.nav-btn')[2])">
+        <div class="icon" style="font-size:16px">👤</div>
+        <h3>Authors</h3><p>Read the stories of our song writers</p>
+      </div>
+      <div class="menu-card" onclick="showPage('categories',document.querySelectorAll('.nav-btn')[3])">
+        <div class="icon" style="font-size:16px">🎵</div>
+        <h3>Categories</h3><p>Browse songs by theme and occasion</p>
+      </div>
+      <div class="menu-card" onclick="showPage('tools',document.querySelectorAll('.nav-btn')[4])">
+        <div class="icon" style="font-size:16px">🤝</div>
+        <h3>Church tools</h3><p>Wedding vows, dispute resolution guides</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="search" class="page">
+    <div id="search-main">
+      <div class="search-tabs">
+        <button class="stab active" onclick="setTab('number',this)">By number</button>
+        <button class="stab" onclick="setTab('lyric',this)">By lyric</button>
+        <button class="stab" onclick="setTab('author',this)">By author</button>
+      </div>
+      <div class="search-box">
+        <input type="text" id="search-input" placeholder="Enter song number..." onkeydown="if(event.key==='Enter')doSearch()">
+        <button onclick="doSearch()">Search</button>
+      </div>
+      <div id="search-results"></div>
+      <div class="section-title">All songs</div>
+      <div id="all-songs"></div>
+    </div>
+    <div id="song-detail" style="display:none">
+      <button class="back-btn" onclick="showSongList()">← Back to search</button>
+      <div id="song-detail-content"></div>
+      <button class="present-btn" onclick="showPresent()">Present on screen (projection mode)</button>
+    </div>
+  </div>
+
+  <div id="authors" class="page">
+    <div class="section-title">Song authors</div>
+    <div id="authors-list"></div>
+  </div>
+
+  <div id="categories" class="page">
+    <div class="section-title">Song categories</div>
+    <div id="cat-list"></div>
+  </div>
+
+  <div id="tools" class="page">
+    <div class="tool-card">
+      <div class="tool-card-header"><div style="font-size:16px">💍</div><h3>Wedding — how to read vows</h3></div>
+      <div class="tool-card-body">
+        <div class="step"><div class="step-num">1</div><p>The pastor opens with a prayer and welcomes the congregation and families of both the bride and groom.</p></div>
+        <div class="step"><div class="step-num">2</div><p>The groom faces the bride and reads his vows aloud, slowly and clearly for all to hear.</p></div>
+        <div class="step"><div class="step-num">3</div><p>The bride then faces the groom and reads her vows in the same manner.</p></div>
+        <div class="step"><div class="step-num">4</div><p>The pastor confirms the vows and the couple exchanges rings as a sign of their commitment.</p></div>
+        <div class="step"><div class="step-num">5</div><p>The congregation is invited to sing a wedding hymn together — see Category: Wedding.</p></div>
+      </div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-card-header"><div style="font-size:16px">🤝</div><h3>Dispute resolution — steps</h3></div>
+      <div class="tool-card-body">
+        <div class="step"><div class="step-num">1</div><p>Both parties are invited to speak with a church elder privately before any group meeting.</p></div>
+        <div class="step"><div class="step-num">2</div><p>The elder listens to each side separately, without judgment, and prays with each person.</p></div>
+        <div class="step"><div class="step-num">3</div><p>A meeting is arranged with both parties and two elders present as witnesses.</p></div>
+        <div class="step"><div class="step-num">4</div><p>Each party speaks without interruption. The elders guide toward a peaceful resolution.</p></div>
+        <div class="step"><div class="step-num">5</div><p>A prayer of reconciliation is offered and the outcome is recorded by the church secretary.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="present-mode" class="page">
+    <button class="back-btn" onclick="closePresent()">← Back to song</button>
+    <div class="proj-screen">
+      <div class="proj-snum" id="p-num"></div>
+      <div class="proj-title" id="p-title"></div>
+      <div class="proj-vlabel" id="p-vlabel"></div>
+      <div class="proj-lyrics" id="p-lyrics"></div>
+      <div class="proj-controls">
+        <div class="proj-dots" id="p-dots"></div>
+        <div class="proj-nav">
+          <button onclick="projPrev()">← Back</button>
+          <button class="pr" onclick="projNext()">Next →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const songs=[
+  {num:1,title:"Bogwa Ikalavesi",author:"Naibeba Kalogusa",cat:"Praise",
+   verses:["Bogwa ikalavesi\nTomota ibodi yoku\nIgau tuta wala\nGuyau imisimi yomi",
+           "Kala sisu e vivila\nYokami e bogwa\nIsim emi nuwa\nBoge la karaiwaga",
+           "Yaubada imisimi\nTuta komwedona\nE bogwa olopola\nGuyau availa wala"],
+   chorus:"Hallelujah! Hallelujah!\nGuyau e availa wala\nTomota yami guyau\nBogwa ikalavesi"},
+  {num:2,title:"Yaubada Boge Imwau",author:"Yosepha Silagi",cat:"Worship",
+   verses:["Yaubada boge imwau\nE kala nunuwa wala\nTuta komwedona\nImitukwasi yomi",
+           "Yokomi e vivila\nIgau boge kaina\nSisu e kala nuwa\nYaubada imisimwau",
+           "Boge la karaiwaga\nIbodi yomi wala\nHallelujah wala\nGuyau e availa"],
+   chorus:null},
+  {num:3,title:"Kala Sisu Guyau",author:"Tolosi Kabisawali",cat:"Prayer",
+   verses:["Kala sisu guyau wala\nE bogwa ilubaleba\nYokami vivila\nIsim emi Yaubada",
+           "Mitaga boge igau\nLa nunuwa e sopi\nTuta komwedona\nGuyau availa wala"],
+   chorus:"Kala sisu! Kala sisu!\nGuyau availa wala\nTomota yami guyau\nBoge ilubaleba"},
+  {num:4,title:"Imisimi Yomi Guyau",author:"Naibeba Kalogusa",cat:"Praise",
+   verses:["Imisimi yomi guyau\nBoge e tuta wala\nKaraiwaga kala\nIbodi tomota"],
+   chorus:"Imisimi! Imisimi!\nGuyau boge imwau\nTomota availa wala\nE kala nunuwa"},
+  {num:5,title:"Sopi Kala Yaubada",author:"Yosepha Silagi",cat:"Wedding",
+   verses:["Sopi kala Yaubada\nIgau boge imwau\nTomota vivila\nIsim emi nuwa",
+           "E kala karaiwaga\nBogwa ikalavesi\nGuyau availa wala\nTuta komwedona",
+           "La sisu e vivila\nYokami ibodi\nImisimi wala\nGuyau e bogwa"],
+   chorus:null},
+  {num:6,title:"Tuma Boge Guyau",author:"Selia Bwagina",cat:"Children",
+   verses:["Tuma boge guyau\nYokami vivila\nIsim emi Yaubada\nE bogwa imwau",
+           "Kala sisu wala\nGuyau e availa\nTuta komwedona\nBoge la nuwa"],
+   chorus:"Tuma! Tuma! Guyau!\nE kala karaiwaga\nTomota yami guyau\nBoge ikalavesi"},
+];
+const authors=[
+  {name:"Naibeba Kalogusa",years:"1968–1995",role:"Elder & Choir Director",songs:[1,4],bio:"Naibeba grew up in Losuia and dedicated 27 years to leading worship across Kiriwina Island. He composed hymns that blend traditional Kiriwina melodies with Christian scripture. He trained three generations of choir singers."},
+  {name:"Yosepha Silagi",years:"1980–present",role:"Deacon & Song Writer",songs:[2,5],bio:"Yosepha has been writing hymns since 1980 and is known for songs that speak to the everyday life of Kiriwina families. She leads the women's choir and has been a deacon for over 20 years."},
+  {name:"Tolosi Kabisawali",years:"1990–2010",role:"Worship Leader",songs:[3],bio:"Tolosi served as worship leader for two decades, composing songs especially for the prayer services held every Wednesday. He is remembered for his deep, prayerful approach to worship."},
+  {name:"Selia Bwagina",years:"2005–present",role:"Children's Ministry Leader",songs:[6],bio:"Selia leads the children's ministry and writes songs especially for young people to learn and sing. Her songs are simple, joyful, and easy for children to remember."},
+];
+const categories=[
+  {name:"Praise",desc:"Songs of praise and thanksgiving",count:2},
+  {name:"Worship",desc:"Devotional songs for services",count:1},
+  {name:"Prayer",desc:"Songs for prayer and seeking God",count:1},
+  {name:"Wedding",desc:"Songs for wedding ceremonies",count:1},
+  {name:"Children",desc:"Songs for children's ministry",count:1},
+  {name:"Funeral",desc:"Songs for funerals",count:0},
+  {name:"Christmas",desc:"Songs for the Christmas season",count:0},
+  {name:"Easter",desc:"Songs for Easter",count:0},
+  {name:"Harvest",desc:"Songs for harvest season",count:0},
+  {name:"General",desc:"Other hymns",count:0},
+];
+let currentSong=null,projSections=[],projIdx=0,searchTab='number';
+function showPage(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  if(id==='search')renderAllSongs('');
+  if(id==='authors')renderAuthors();
+  if(id==='categories')renderCategories();
+}
+function homeSearch(){
+  const q=document.getElementById('hs-input').value.trim();
+  if(!q)return;
+  showPage('search',document.querySelectorAll('.nav-btn')[1]);
+  document.getElementById('search-input').value=q;
+  doSearch();
+}
+function setTab(tab,btn){
+  searchTab=tab;
+  document.querySelectorAll('.stab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const ph={number:'Enter song number...',lyric:'Enter a line from the song...',author:'Enter author name...'};
+  document.getElementById('search-input').placeholder=ph[tab];
+  document.getElementById('search-results').innerHTML='';
+  renderAllSongs('');
+}
+function doSearch(){
+  const q=document.getElementById('search-input').value.trim().toLowerCase();
+  if(!q){renderAllSongs('');return;}
+  let results;
+  if(searchTab==='number') results=songs.filter(s=>String(s.num)===q.replace(/\D/g,''));
+  else if(searchTab==='lyric') results=songs.filter(s=>s.verses.some(v=>v.toLowerCase().includes(q))||(s.chorus&&s.chorus.toLowerCase().includes(q)));
+  else results=songs.filter(s=>s.author.toLowerCase().includes(q));
+  renderResults(results,q);
+}
+function renderResults(results,q){
+  const el=document.getElementById('search-results');
+  if(!results.length){el.innerHTML='<p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:12px">No songs found for "'+q+'"</p>';renderAllSongs('');return;}
+  el.innerHTML='<div class="result-count">'+results.length+' result'+(results.length>1?'s':'')+' found</div>'+results.map(songCard).join('');
+  document.getElementById('all-songs').innerHTML='';
+}
+function renderAllSongs(filter){
+  const list=filter?songs.filter(s=>s.title.toLowerCase().includes(filter)||String(s.num).includes(filter)):songs;
+  document.getElementById('all-songs').innerHTML='<div class="result-count">Showing '+list.length+' of '+songs.length+' songs</div>'+list.map(songCard).join('');
+}
+function songCard(s){
+  return '<div class="song-result" onclick="openSong('+s.num+')"><div class="song-num-badge">'+s.num+'</div><div class="song-result-info"><h4>'+s.title+'<span class="cat-badge">'+s.cat+'</span></h4><p>'+s.author+' &nbsp;·&nbsp; '+s.verses.length+' verse'+(s.verses.length>1?'s':'')+(s.chorus?' + chorus':'')+'</p></div><span style="color:var(--color-text-tertiary);font-size:16px">›</span></div>';
+}
+function openSong(num){
+  currentSong=songs.find(s=>s.num===num);
+  document.getElementById('search-main').style.display='none';
+  document.getElementById('song-detail').style.display='block';
+  let html='<div class="song-detail"><div class="song-detail-header"><div class="num">Song '+currentSong.num+' &nbsp;·&nbsp; '+currentSong.cat+'</div><h2>'+currentSong.title+'</h2><div class="meta">'+currentSong.author+'</div></div>';
+  currentSong.verses.forEach((v,i)=>{html+='<div class="verse-block"><div class="verse-label">Verse '+(i+1)+'</div><div class="verse-text">'+v.replace(/\n/g,'<br>')+'</div></div>';});
+  if(currentSong.chorus)html+='<div class="chorus-block"><div class="verse-label">Chorus</div><div class="verse-text">'+currentSong.chorus.replace(/\n/g,'<br>')+'</div></div>';
+  html+='</div>';
+  document.getElementById('song-detail-content').innerHTML=html;
+}
+function showSongList(){
+  document.getElementById('search-main').style.display='block';
+  document.getElementById('song-detail').style.display='none';
+  renderAllSongs('');
+}
+function showPresent(){
+  if(!currentSong)return;
+  projSections=[];
+  currentSong.verses.forEach((v,i)=>projSections.push({label:'Verse '+(i+1)+' of '+currentSong.verses.length,text:v}));
+  if(currentSong.chorus)projSections.push({label:'Chorus',text:currentSong.chorus});
+  projIdx=0;
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('present-mode').classList.add('active');
+  renderProj();
+}
+function renderProj(){
+  const sec=projSections[projIdx];
+  document.getElementById('p-num').textContent='Song '+currentSong.num;
+  document.getElementById('p-title').textContent=currentSong.title;
+  document.getElementById('p-vlabel').textContent=sec.label;
+  document.getElementById('p-lyrics').innerHTML=sec.text.replace(/\n/g,'<br>');
+  document.getElementById('p-dots').innerHTML=projSections.map((_,i)=>'<div class="proj-dot'+(i===projIdx?' on':'')+'"></div>').join('');
+}
+function projNext(){if(projIdx<projSections.length-1){projIdx++;renderProj();}}
+function projPrev(){if(projIdx>0){projIdx--;renderProj();}}
+function closePresent(){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('search').classList.add('active');
+  document.querySelectorAll('.nav-btn')[1].classList.add('active');
+  document.getElementById('search-main').style.display='block';
+  document.getElementById('song-detail').style.display='none';
+}
+function renderAuthors(){
+  document.getElementById('authors-list').innerHTML=authors.map(a=>{
+    const initials=a.name.split(' ').map(w=>w[0]).join('').slice(0,2);
+    return '<div class="author-card"><div class="author-top"><div class="author-avatar">'+initials+'</div><div><h3>'+a.name+'</h3><div class="role">'+a.role+'</div><div class="years">'+a.years+'</div></div></div><p>'+a.bio+'</p><div class="author-songs">'+a.songs.map(n=>'<span class="author-song-pill">Song '+n+'</span>').join('')+'</div></div>';
+  }).join('');
+}
+function renderCategories(){
+  document.getElementById('cat-list').innerHTML=categories.map(c=>'<div class="cat-row"><div class="cat-row-left"><h4>'+c.name+'</h4><p>'+c.desc+'</p></div><span class="cat-count">'+c.count+'</span></div>').join('');
+}
+renderAllSongs('');
+</script>
